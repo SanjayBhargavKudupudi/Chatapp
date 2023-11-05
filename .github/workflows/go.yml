@@ -1,0 +1,39 @@
+name: Go Chat App CI/CD
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    name: Build and Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: '1.17' # Use the Go version specified in your go.mod file
+
+    - name: Get dependencies
+      run: go mod download
+
+    - name: Test
+      run: go test ./...
+
+    - name: Build
+      run: go build -v .
+
+    # Use this step if you have any environment variables or secrets to configure
+    # - name: Set environment variables
+    #   run: |
+    #     echo "VAR_NAME=${{ secrets.VAR_VALUE }}" >> $GITHUB_ENV
+
+    # Deployment step - you'll need to customize this depending on your hosting provider
+    # - name: Deploy
+    #   run: |
+    #     # Your deployment script or commands here
